@@ -1,78 +1,24 @@
-import random
+import BattleField
 
 
-class Unit:
-    health = None
-    recharge = None
-
-    def __init__(self, health, recharge):
-        self.health = health
-        self.recharge = recharge
-
-    def do_attack(self):
-        # атака
-        pass
-
-    def take_damage(self, *args):
-        # получение атаки и блок
-        pass
-
-    def get_recharge(self):
-        return self.recharge
-
-    def get_health(self):
-        return self.health
-
-
-class Solder(Unit):
-    recharge = random.randint(100, 2000)
-    experience = 0
-    health = 100
-
-    def get_experience(self):
-        return self.experience
-
-    def do_attack(self):
-        soldiers_attack = 0.5 * (1 + self.get_health() / 100) * \
-                          random.randint(50 + self.experience, 100) / 100
-        attack = self.take_damage(soldiers_attack)
-        self.health -= attack
-
-    def take_damage(self, attack):
-        damage = 0.05 + self.experience / 100
-        return attack - damage
-
-
-class Vehicles(Unit):
-    recharge = random.randint(1000, 2000)
-    operators = []
-    health = None
-
-    def __init__(self):
-        super().__init__(self.health, self.recharge)
-        operator_count = random.randint(1, 3)
-        i = 0
-        while i < operator_count:
-            self.operators.append(Solder(Solder.health, Solder.recharge))
-
-    def get_operators(self):
-        return self.operators
-
-    def set_health(self):
-        # for i in self.operators:
-            # i.health += i.health
-        pass
-
-
-class Squad:
-    units = None
-
-    def __init__(self, units):
-        self.units = units
-
-    def get_power(self):
-        pass
+def func(armies_number_, strategy_, squads_number_):
+    print('Input units (soldiers and vehicles) 5 to 10: ')
+    soldiers = int(input('soldiers = '))
+    vehicles = int(input('vehicles = '))
+    if 5 <= soldiers + vehicles <= 10:
+        battle = BattleField.BattleField(armies_number=armies_number_,
+                                         strategy=strategy_,
+                                         squads_number=squads_number_,
+                                         soldiers_number=soldiers,
+                                         vehicles_number=vehicles)
+        print('\033[1m' + "Win army: " + str(battle.start()))
+    else:
+        print('Incorrect number of units.')
+        func(armies_number_, strategy_, squads_number_)
 
 
 if __name__ == "__main__":
-    pass
+    armies_number = int(input('armies_number = '))
+    strategy = input('strategy = ')
+    squads_number = int(input('squads_number = '))
+    func(armies_number, strategy, squads_number)
